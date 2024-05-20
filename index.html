@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch</title>
+</head>
+<body>
+    <div class="container" style="display: flex; flex-direction: column;"></div>
+    <span><button id="new">New Grid</button><button id="clear">Clear Grid</button></span>
+    <script>
+        const container = document.querySelector(".container");
+        const newButton = document.querySelector("#new");
+        const clearButton = document.querySelector("#clear");
+
+        populateGrid(16);
+
+        newButton.addEventListener("click", () => {
+            const newSize = prompt("Enter a new grid size:");
+            if (newSize && !isNaN(newSize) && newSize > 0) {
+                populateGrid(parseInt(newSize));
+            } else {
+                alert("Please enter a valid number.");
+            }
+        });
+
+        clearButton.addEventListener("click", clearGrid);
+
+        function populateGrid(n) {
+            clearGrid();
+            const size = 800 / n;
+            for (let y = 0; y < n; y++) {
+                const row = document.createElement("div");
+                row.style.display = "flex";
+                container.appendChild(row);
+                for (let x = 0; x < n; x++) {
+                    const cell = document.createElement("div");
+                    cell.style.border = "1px solid black";
+                    cell.style.height = `${size}px`;
+                    cell.style.width = `${size}px`;
+                    cell.style.backgroundColor = "white";
+                    cell.addEventListener("mouseenter", () => darken(cell));
+                    row.appendChild(cell);
+                }
+            }
+        }
+
+        function darken(c) {
+            c.style.backgroundColor = "black";
+        }
+
+        function clearGrid() {
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>
